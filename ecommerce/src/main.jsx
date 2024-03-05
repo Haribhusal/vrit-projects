@@ -10,6 +10,9 @@ import RootLayout from "./layout/RootLayout";
 import Homepage from "./pages/Homepage";
 import ProductDetailPage from "./pages/ProductDetailPage";
 import ProductsPage from "./pages/ProductsPage";
+import { store } from "./redux/store";
+
+import { Provider } from "react-redux";
 
 const myRouter = createBrowserRouter([
   {
@@ -50,6 +53,8 @@ const myRouter = createBrowserRouter([
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
-    <RouterProvider router={myRouter} />
+    <Provider store={store}>
+      <RouterProvider router={myRouter} />
+    </Provider>
   </React.StrictMode>
 );

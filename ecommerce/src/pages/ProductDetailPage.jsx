@@ -4,11 +4,14 @@ import axios from "axios";
 import { IoIosPricetags } from "react-icons/io";
 import { FaStar, FaRegStar } from "react-icons/fa6";
 import Rating from "react-rating";
+import { addItemToCart } from "./../redux/cartSlice";
+import { useDispatch, useSelector } from "react-redux";
+import toast, { Toaster } from "react-hot-toast";
 
 const ProductDetailPage = () => {
+  const dispatch = useDispatch();
   const [singleProduct, setSingleProduct] = useState([]);
   const [currentImage, setCurrentImage] = useState(null);
-  console.log(currentImage);
   const params = useParams();
   const priceAfterDiscount =
     singleProduct.price -
@@ -21,7 +24,6 @@ const ProductDetailPage = () => {
       let response = await axios.get(
         `https://dummyjson.com/products/${params.id}`
       );
-      console.log(response);
       setSingleProduct(response.data);
     }
     getSingleProductDetail();
@@ -31,9 +33,14 @@ const ProductDetailPage = () => {
   useEffect(() => {
     setCurrentImage(singleProduct.thumbnail);
   }, [singleProduct.thumbnail]);
-  // useEffect(() => {
-  //   setCurrentImage(singleProduct?.thumbnail);
-  // }, [singleProduct?.thumbnail]);
+
+  const { cartItems } = useSelector((state) => state.cart);
+  console.log(cartItems);
+
+  const handleAddToCart = () => {
+    dispatch(addItemToCart(singleProduct));
+    toast(`${singleProduct.title} is added to the cart`);
+  };
 
   return (
     <section>
@@ -89,7 +96,9 @@ const ProductDetailPage = () => {
 
             <div className="buttons flex gap-3 items-center">
               <button className="btn">Buy Now</button>
-              <button className="btn">Add to Cart</button>
+              <button className="btn" onClick={handleAddToCart}>
+                Add to Cart
+              </button>
             </div>
           </div>
         </div>
