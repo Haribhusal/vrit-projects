@@ -7,11 +7,13 @@ import Rating from "react-rating";
 import { addItemToCart } from "./../redux/cartSlice";
 import { useDispatch, useSelector } from "react-redux";
 import toast, { Toaster } from "react-hot-toast";
+import SingleProductLoader from "./../components/loaders/SingleProductLoader";
 
 const ProductDetailPage = () => {
   const dispatch = useDispatch();
   const [singleProduct, setSingleProduct] = useState([]);
   const [currentImage, setCurrentImage] = useState(null);
+  const [loading, setLoading] = useState(false);
   const params = useParams();
   const priceAfterDiscount =
     singleProduct.price -
@@ -21,10 +23,12 @@ const ProductDetailPage = () => {
 
   useEffect(() => {
     async function getSingleProductDetail() {
+      setLoading(true);
       let response = await axios.get(
         `https://dummyjson.com/products/${params.id}`
       );
       setSingleProduct(response.data);
+      setLoading(false);
     }
     getSingleProductDetail();
     setCurrentImage(singleProduct.thumbnail);
@@ -41,6 +45,9 @@ const ProductDetailPage = () => {
     dispatch(addItemToCart(singleProduct));
     toast(`${singleProduct.title} is added to the cart`);
   };
+  if (loading) {
+    return <SingleProductLoader />;
+  }
 
   return (
     <section>

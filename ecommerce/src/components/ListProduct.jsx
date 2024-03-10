@@ -24,7 +24,6 @@ const ListProduct = () => {
     dispatch(addItemToCart(product));
     toast.success(`${product.title} is added to the cart`);
   };
-  console.log(products);
   if (loading) {
     return (
       <section>

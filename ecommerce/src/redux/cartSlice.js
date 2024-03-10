@@ -7,6 +7,9 @@ export const cartSlice = createSlice({
   name: "cart",
   initialState,
   reducers: {
+    clearCart: (state) => {
+      state.cartItems = [];
+    },
     addItemToCart: (state, action) => {
       const newItem = action.payload;
       const existingItemIndex = state.cartItems.findIndex(
@@ -47,20 +50,16 @@ export const cartSlice = createSlice({
       const indexOfUpdatingItem = state.cartItems.findIndex(
         (item) => item.id === id
       );
-
       if (indexOfUpdatingItem !== -1) {
         // If the item is found in the cart
         const updatingArray = [...state.cartItems];
-
         updatingArray[indexOfUpdatingItem] = {
           // Update the quantity of the specified item
           ...updatingArray[indexOfUpdatingItem],
           quantity: updatingArray[indexOfUpdatingItem].quantity - 1,
         };
-
         state.cartItems = updatingArray; // Update the state with the new cart items array
       }
-
       if (state.cartItems[indexOfUpdatingItem].quantity < 1) {
         state.cartItems = state.cartItems.filter(
           (item) => item.id !== state.cartItems[indexOfUpdatingItem].id
@@ -75,6 +74,7 @@ export const {
   removeItemFromCart,
   increaseQuantity,
   decreaseQuantity,
+  clearCart,
 } = cartSlice.actions;
 
 export default cartSlice.reducer;

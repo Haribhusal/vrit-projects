@@ -2,15 +2,68 @@ import { FaMinus, FaPlus } from "react-icons/fa6";
 import { useSelector } from "react-redux";
 import { FaTrash } from "react-icons/fa";
 import { useDispatch } from "react-redux";
-import { decreaseQuantity, removeItemFromCart } from "./../redux/cartSlice";
-import { Link } from "react-router-dom";
+import { useState } from "react";
+import {
+  clearCart,
+  decreaseQuantity,
+  removeItemFromCart,
+} from "./../redux/cartSlice";
 import { increaseQuantity } from "./../redux/cartSlice";
+import axios from "axios";
+import { toast } from "react-hot-toast";
 
 const CartPage = () => {
+  const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
   const { cartItems } = useSelector((state) => state.cart);
   // Dispatch action to add item to the cart
 
+  const handleOrder = async () => {
+    try {
+      setLoading(true);
+      const totalAmount = Math.ceil(
+        cartItems.reduce(
+          (acc, item) =>
+            acc +
+            (item.price - (item.price * item.discountPercentage) / 100) *
+              item.quantity,
+          0
+        )
+      );
+
+      const products = cartItems.map((item) => ({
+        name: item.title,
+        quantity: item.quantity,
+        price: item.price - (item.price * item.discountPercentage) / 100,
+      }));
+
+      const sendingData = {
+        totalAmount,
+        products,
+      };
+
+      const response = await axios.post(
+        "http://localhost:3000/orders",
+        sendingData
+      );
+
+      // const getOrders = await axios.get("http://localhost:3000/orders");
+
+      if (response.data) {
+        toast("Order has been placed successfully");
+      } else {
+        // Handle unexpected response status
+        console.error("Unexpected response status:", response.status);
+      }
+      setLoading(false);
+
+      dispatch(clearCart()); // Dispatch the clearCart action
+    } catch (error) {
+      // Handle Axios request error
+      // console.error("Error placing order:", error);
+      toast("Failed to place order. Please try again later.");
+    }
+  };
   return (
     <div className="group">
       <div
@@ -96,9 +149,9 @@ const CartPage = () => {
         </div>
 
         <div className="actions mt-5 flex gap-5 justify-between">
-          <Link to={"/checkout"}>
-            <button className="btn">Checkout Now</button>
-          </Link>
+          <button className="btn" onClick={handleOrder}>
+            {loading ? "Sending Order..." : "Send Order"}
+          </button>
         </div>
       </div>
     </div>
@@ -106,3 +159,24 @@ const CartPage = () => {
 };
 
 export default CartPage;
+
+// {
+//   "totalAmount": 2300,
+//   "products": [
+//     {
+//       "name": "Product 1",
+//       "quantity": 2,
+//       "price": 1000
+//     },
+//     {
+//       "name": "Product 2",
+//       "quantity": 1,
+//       "price": 500
+//     },
+//     {
+//       "name": "Product 3",
+//       "quantity": 4,
+//       "price": 200
+//     }
+//   ]
+// }

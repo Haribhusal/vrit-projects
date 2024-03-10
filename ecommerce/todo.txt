@@ -19,3 +19,11 @@ Use dummy data for products.
 Use Tailwindcss for styling.
 Use React Router Dom for Routing
 Frontend Merged (05 & 06 )- Vrit Technologies
+
+
+kGFbKwsShyWpqcGj
+
+bhusalhari89
+
+mongodb+srv://bhusalhari89:kGFbKwsShyWpqcGj@orders.fwqm1s7.mongodb.net/
+
