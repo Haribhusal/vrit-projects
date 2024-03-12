@@ -43,7 +43,7 @@ const CartPage = () => {
       };
 
       const response = await axios.post(
-        "http://localhost:3000/orders",
+        "http://localhost:8000/orders",
         sendingData
       );
 

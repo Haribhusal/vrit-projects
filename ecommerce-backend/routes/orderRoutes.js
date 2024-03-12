@@ -13,6 +13,6 @@ router.post("/", createOrder);
 router.get("/", getOrders);
 
 // Route for deleting an order by ID
-router.delete("/:orderId", deleteOrder);
+router.delete("/:id", deleteOrder);
 
 module.exports = router;

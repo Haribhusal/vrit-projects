@@ -14,11 +14,14 @@ import { store } from "./redux/store";
 
 import { Provider } from "react-redux";
 import CartPage from "./pages/CartPage";
+import OrdersPage from "./pages/OrdersPage";
+import ErrorPage from "./pages/ErrorPage";
 
 const myRouter = createBrowserRouter([
   {
     path: "/",
     element: <RootLayout />,
+    errorElement: <ErrorPage />,
     children: [
       {
         path: "/",
@@ -51,6 +54,10 @@ const myRouter = createBrowserRouter([
       {
         path: "/cart",
         element: <CartPage />,
+      },
+      {
+        path: "/orders",
+        element: <OrdersPage />,
       },
     ],
   },

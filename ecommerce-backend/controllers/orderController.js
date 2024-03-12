@@ -29,8 +29,11 @@ const getOrders = async (req, res) => {
 
 // Delete order by ID
 const deleteOrder = async (req, res) => {
+  console.log(req);
+  console.log("hello i am deleting");
   try {
     const { id } = req.params;
+    console.log(id);
     const deletedOrder = await Order.findByIdAndDelete(id);
     if (!deletedOrder) {
       return res.status(404).json({ error: "Order not found" });

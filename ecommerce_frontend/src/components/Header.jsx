@@ -15,6 +15,7 @@ const Header = () => {
         <Link to="/services">Services</Link>
         <Link to="/blog">Blog</Link>
         <Link to="/contact">Contact</Link>
+        <Link to="/orders">Orders</Link>
       </nav>
       <div className="buttons flex items-center gap-5">
         <CartButton />
